@@ -1,24 +1,22 @@
 package com.example.demo.Controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.demo.BeanUtils;
 import com.example.demo.Msg.Msg;
-import com.example.demo.Model.Users;
-import com.example.demo.Model.UsersList;
-
-import org.slf4j.LoggerFactory;
+import com.example.demo.Service.interfaces.SignService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/user/Sign")
 public class UserSignCtler {
-    private static final org.slf4j.Logger logger = LoggerFactory.getLogger(UserSignCtler.class);
     private static Msg msg;
+
+    private SignService signservice = BeanUtils.getBean(SignService.class);
 
     public static Msg getMsg() {
         return msg;
@@ -42,34 +40,19 @@ public class UserSignCtler {
 
     @RequestMapping("/SigninHandle")
     public void signinHandle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String username = list[1];
-        String password = list[3];
-        data = null;
-        reader = null;
-        if (!UsersList.userlist.containsKey(username)) {
-            logger.info(username + " no exist!");
-            msg = Msg.USERNAME_NOEXIST;
+
+        msg = signservice.signinHandleService(request);
+        if (msg.equals(Msg.USERNAME_NOEXIST)) {
             response.sendRedirect(request.getContextPath() + "SignUp");
             return;
-        } else if (!UsersList.userlist.get(username).equals(password)) {
-            logger.info(username + " password invaild!");
+        } else if (msg.equals(Msg.PASSWORD_WRONG)) {
             response.sendRedirect(request.getContextPath() + "SignIn");
-            msg = Msg.PASSWORD_WRONG;
+            return;
+        } else if (msg.equals(Msg.SIGNIN_SUCC)) {
+            response.sendRedirect(request.getContextPath() + "/user/Meau");
             return;
         }
-        Users user = new Users();
-        user.setName(username);
-        user.setPsw(password);
-        request.getSession().setAttribute("user", user);
-        msg = Msg.SIGNIN_SUCC;
-        response.sendRedirect(request.getContextPath() + "/user/Meau");
-        logger.info(user.getName() + " login succ!");
+        throw new IllegalArgumentException("登录异常");
     }
 
     @RequestMapping("/SignUp")
@@ -79,27 +62,16 @@ public class UserSignCtler {
 
     @RequestMapping("/SignupHandle")
     public void signupHandle(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String username = list[1];
-        String password = list[3];
-        data = null;
-        reader = null;
 
-        if (UsersList.userlist.containsKey(username)) {
-            logger.info(username + " already exists");
-            msg = Msg.USERNAME_EXIST;
+        msg = signservice.signupHandleService(request);
+        if (msg.equals(Msg.USERNAME_EXIST)) {
             response.sendRedirect(request.getContextPath() + "SignUp");
             return;
+        } else if (msg.equals(Msg.SIGNUP_SUCC)) {
+            response.sendRedirect(request.getContextPath() + "SignIn");
+            return;
         }
-        UsersList.userlist.put(username, password);
-        msg = Msg.SIGNUP_SUCC;
-        response.sendRedirect(request.getContextPath() + "SignIn");
-
+        throw new IllegalArgumentException("注册异常");
     }
 
 }

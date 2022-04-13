@@ -1,5 +1,8 @@
 package com.example.demo.Msg;
 
+import org.springframework.context.annotation.Scope;
+
+@Scope("prototype")
 public enum Msg {
     SIGNIN_SUCC("./users/msg/signinsucc.js"),
     SIGNUP_SUCC("./users/msg/signupsucc.js"),

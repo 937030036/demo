@@ -3,7 +3,7 @@ package com.example.demo.Intercepter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.demo.Model.Users;
+import com.example.demo.Model.User;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,7 +29,7 @@ public class MyIntercepter implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        Users user = (Users) request.getSession().getAttribute("user");
+        User user = (User) request.getSession().getAttribute("user");
         if (user == null) {
             logger.info(request.getRemoteAddr() + "由于未登录被拦截");
             response.sendRedirect(request.getContextPath() + "/");
