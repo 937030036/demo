@@ -1,4 +1,4 @@
-package com.example.demo.Users;
+package com.example.demo.Model;
 
 public class Users {
     private String psw;

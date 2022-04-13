@@ -3,7 +3,7 @@ package com.example.demo.Intercepter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.demo.Users.Users;
+import com.example.demo.Model.Users;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

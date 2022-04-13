@@ -7,8 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.example.demo.Msg.Msg;
-import com.example.demo.Users.Users;
-import com.example.demo.Users.UsersList;
+import com.example.demo.Model.Users;
+import com.example.demo.Model.UsersList;
 
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
