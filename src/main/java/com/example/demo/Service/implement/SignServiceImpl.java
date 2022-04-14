@@ -15,8 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.var;
-
 @Service
 public class SignServiceImpl implements SignService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
