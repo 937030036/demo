@@ -30,6 +30,7 @@ public class MyIntercepter implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         User user = (User) request.getSession().getAttribute("user");
+        logger.info(request.getRemoteAddr() + "进入拦截");
         if (user == null) {
             logger.info(request.getRemoteAddr() + "由于未登录被拦截");
             response.sendRedirect(request.getContextPath() + "/");
