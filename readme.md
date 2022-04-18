@@ -14,4 +14,14 @@
 
 ---
 
+## 架构图
+
+* 转到[架构图][3]
+
+----
+
+转到[工程根目录][2]
+
 [1]:/pom.xml
+[2]:/src/main/java/com/example/demo/
+[3]:/struction.drawio
