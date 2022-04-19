@@ -53,7 +53,7 @@ public class UserMeauCtler {
     @RequestMapping(value = "/getpic", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseBody
     public byte[] getPic() throws IOException {
-        File file = new File("D:/project/spring/demo/src/main/resources/templates/users/pic.png");
+        File file = new File("src/main/resources/templates/users/pic.png");
         FileInputStream input = new FileInputStream(file);
         byte[] bytes = new byte[input.available()];
         input.read(bytes, 0, input.available());
@@ -63,7 +63,7 @@ public class UserMeauCtler {
 
     @RequestMapping(value = "/getvideo")
     public void getvideo(HttpServletResponse response) throws IOException {
-        File file = new File("D:/project/spring/demo/src/main/resources/templates/users/video.mp4");
+        File file = new File("src/main/resources/templates/users/video.mp4");
         FileInputStream input = new FileInputStream(file);
         byte[] bytes = new byte[input.available()];
         input.read(bytes, 0, input.available());
