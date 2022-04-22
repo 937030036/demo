@@ -1,1 +1,0 @@
-alert("Register succ,Please login!")

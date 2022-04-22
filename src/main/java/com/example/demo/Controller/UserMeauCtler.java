@@ -7,8 +7,6 @@ import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.demo.Msg.Msg;
-
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,20 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user/Meau")
 public class UserMeauCtler {
 
-    private static Msg msg;
-
     @RequestMapping("")
     public String showMeau() {
-        msg = UserSignCtler.getMsg();
-        UserSignCtler.setMsg(Msg.NO_MSG);
         return "./users/meau";
-    }
-
-    @RequestMapping("/GetMsg")
-    public String showMsg() {
-        String tmp = msg.getpath();
-        msg = Msg.NO_MSG;
-        return tmp;
     }
 
     @RequestMapping("/pic")

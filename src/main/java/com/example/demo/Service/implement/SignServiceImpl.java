@@ -2,9 +2,12 @@ package com.example.demo.Service.implement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import com.example.demo.Dao.UserlistMapper;
 import com.example.demo.Model.User;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignServiceImpl implements SignService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
+    private static Map<String, HttpSession> userloginMap = new HashMap<>();
     @Autowired
     UserlistMapper userlistmapper;
 
@@ -41,9 +45,17 @@ public class SignServiceImpl implements SignService {
         for (var user : userList) {
             if (user.getUsername().equals(username)) {
                 if (user.getPassword().equals(password)) {
-                    request.getSession().setAttribute("user", user);
                     logger.info(user.getUsername() + " login succ!");
+
                     msg = Msg.SIGNIN_SUCC;
+
+                    if (!userloginMap.isEmpty()) {
+                        if (userloginMap.containsKey(username)) {
+                            userloginMap.get(username).invalidate();
+                        }
+                    }
+                    userloginMap.put(username, request.getSession());
+                    request.getSession().setAttribute("user", user);
                     return msg;
                 } else {
                     logger.info(username + " password invaild!");

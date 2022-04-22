@@ -2,7 +2,6 @@ package com.example.demo.Intercepter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.example.demo.Model.User;
 
 import org.slf4j.LoggerFactory;
@@ -30,9 +29,9 @@ public class MyIntercepter implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         User user = (User) request.getSession().getAttribute("user");
-        logger.info(request.getRemoteAddr() + "进入拦截");
         if (user == null) {
             logger.info(request.getRemoteAddr() + "由于未登录被拦截");
+            request.getSession().setAttribute("msg", "未登录或异地登录");
             response.sendRedirect(request.getContextPath() + "/");
             return false;
         }

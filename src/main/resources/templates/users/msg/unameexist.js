@@ -1,1 +1,0 @@
-alert("Username exist,Please retry!")
