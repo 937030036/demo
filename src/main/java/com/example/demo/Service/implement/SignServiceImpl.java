@@ -9,7 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.example.demo.Dao.UserlistMapper;
+import com.example.demo.Dao.UserMapper;
 import com.example.demo.Model.User;
 import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.SignService;
@@ -23,7 +23,7 @@ public class SignServiceImpl implements SignService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
     private static Map<String, HttpSession> userloginMap = new HashMap<>();
     @Autowired
-    UserlistMapper userlistmapper;
+    UserMapper userlistmapper;
 
     private Msg msg;
 
