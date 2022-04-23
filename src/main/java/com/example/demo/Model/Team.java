@@ -1,3 +1,12 @@
+/*
+ * @Description: Model:Team,Attribute:teamid,teamname,teampassword.
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-22 22:39:49
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-23 22:27:48
+ */
+
 package com.example.demo.Model;
 
 public class Team {

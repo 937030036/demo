@@ -53,10 +53,10 @@
 
 5. trans_handle
 
-|             |    transid     |    userid    | ishandled |
-| :---------: | :------------: | :----------: | :-------: |
-| Primary Key |                |              |           |
-|    Type     |      int       |     int      |  Boolean  |
-|     Ref     | trans(transid) | user(userid) |           |
+|             |    transid     |    userid    | ishandled |    value     |
+| :---------: | :------------: | :----------: | :-------: | :----------: |
+| Primary Key |                |              |           |              |
+|    Type     |      int       |     int      |  Boolean  | varchar(200) |
+|     Ref     | trans(transid) | user(userid) |           |              |
 
 * Table storing transactions records distributed all users.

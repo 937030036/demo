@@ -1,3 +1,12 @@
+/*
+ * @Description: Intercepter for signing in.
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-06 21:07:32
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-23 22:37:03
+ */
+
 package com.example.demo.Intercepter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +35,14 @@ public class MyIntercepter implements HandlerInterceptor {
     }
 
     @Override
+    /**
+     * @description: Check session of current request.
+     * @param {HttpServletRequest}  request
+     * @param {HttpServletResponse} response
+     * @param {Object}              handler
+     * @return {boolean}
+     * @author: Zhangchunhao
+     */
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         User user = (User) request.getSession().getAttribute("user");

@@ -23,13 +23,13 @@ public class SignServiceImpl implements SignService {
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
     private static Map<String, HttpSession> userloginMap = new HashMap<>();
     @Autowired
-    UserMapper userlistmapper;
+    UserMapper usermapper;
 
     private Msg msg;
 
     @Override
     public Msg signinHandleService(HttpServletRequest request) throws IOException {
-        List<User> userList = userlistmapper.getUserList();
+        List<User> userList = usermapper.getUserList();
 
         StringBuilder data = new StringBuilder();
         BufferedReader reader = request.getReader();
@@ -56,6 +56,7 @@ public class SignServiceImpl implements SignService {
                     }
                     userloginMap.put(username, request.getSession());
                     request.getSession().setAttribute("user", user);
+
                     return msg;
                 } else {
                     logger.info(username + " password invaild!");
@@ -71,7 +72,7 @@ public class SignServiceImpl implements SignService {
 
     @Override
     public Msg signupHandleService(HttpServletRequest request) throws IOException {
-        List<User> userList = userlistmapper.getUserList();
+        List<User> userList = usermapper.getUserList();
 
         StringBuilder data = new StringBuilder();
         BufferedReader reader = request.getReader();
@@ -84,17 +85,26 @@ public class SignServiceImpl implements SignService {
         data = null;
         reader = null;
 
+        int userid=0;
+        boolean id_increment_flg=true;
         for (var user : userList) {
+            if(id_increment_flg){
+                userid++;
+                if(user.getUserid()!=userid)    id_increment_flg=false;
+                
+            } 
             if (user.getUsername().equals(username)) {
                 logger.info(username + " already exists");
                 msg = Msg.USERNAME_EXIST;
                 return msg;
             }
         }
+        if(userid==0)   userid=1;
         User user = new User();
+        user.setUserid(userid);
         user.setUsername(username);
         user.setPassword(password);
-        int ret = userlistmapper.insertUser(user);
+        int ret = usermapper.insertUser(user);
         assert (ret > 0);
         msg = Msg.SIGNUP_SUCC;
 

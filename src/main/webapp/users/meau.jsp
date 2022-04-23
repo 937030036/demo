@@ -24,6 +24,7 @@
                 </form>
 		
         </div>
-        <div align="center"><font size="2"> ${msg}</font></div>
+        <input type='hidden' value='${data}'>
+        <div align="center"><font size="2"> ${data}</font></div>
     </body>
 </html>

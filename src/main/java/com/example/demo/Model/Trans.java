@@ -1,3 +1,12 @@
+/*
+ * @Description: Model:Trans,Attribute:transid,teamid,transtype,value.
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-22 22:48:26
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-23 22:28:16
+ */
+
 package com.example.demo.Model;
 
 public class Trans {

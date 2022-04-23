@@ -1,6 +1,15 @@
+/*
+ * @Description: Model:Userinfo,Attribute:userid,teamid,isleader.
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-22 22:46:41
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-23 22:30:39
+ */
 package com.example.demo.Model;
 
-public class User_info {
+
+public class Userinfo {
     private int userid;
     private int teamid;
     private boolean isleader;
@@ -21,7 +30,7 @@ public class User_info {
         this.teamid = teamid;
     }
 
-    public boolean isIsleader() {
+    public boolean isLeader() {
         return isleader;
     }
 
