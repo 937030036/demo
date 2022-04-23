@@ -4,11 +4,11 @@
 
 1. user
 
-|             |  id   |  username   | userpassword |
-| :---------: | :---: | :---------: | :----------: |
-| Primary Key |   Y   |             |              |
-|    Type     |  int  | varchar(20) | varchar(20)  |
-|     Ref     |       |             |              |
+|             | userid |  username   | userpassword |
+| :---------: | :----: | :---------: | :----------: |
+| Primary Key |   Y    |             |              |
+|    Type     |  int   | varchar(20) | varchar(20)  |
+|     Ref     |        |             |              |
 
 * desc:Table storing registered user's infomation for login verification.
 
@@ -28,11 +28,11 @@
 
 3. user_info
    
-|             |    id    |    teamid    | isleader |
-| :---------: | :------: | :----------: | :------: |
-| Primary Key |    Y     |      Y       |          |
-|    Type     |   int    |     int      | Boolean  |
-|     Ref     | user(id) | team(teamid) |          |
+|             |    userid    |    teamid    | isleader |
+| :---------: | :----------: | :----------: | :------: |
+| Primary Key |      Y       |      Y       |          |
+|    Type     |     int      |     int      | Boolean  |
+|     Ref     | user(userid) | team(teamid) |          |
 
 * Table storing relations of users and teams.
 
@@ -40,11 +40,11 @@
 
 4. trans
 
-|             | transid |    teamid    |  transtype  |    value    |
-| :---------: | :-----: | :----------: | :---------: | :---------: |
-| Primary Key |    Y    |              |             |             |
+|             | transid |    teamid    |  transtype  |    value     |
+| :---------: | :-----: | :----------: | :---------: | :----------: |
+| Primary Key |    Y    |              |             |              |
 |    Type     |   int   |     int      | varchar(20) | varchar(200) |
-|     Ref     |         | team(teamid) |             |             |
+|     Ref     |         | team(teamid) |             |              |
 
 * Table storing registered transactions information.
 * transtype in(message,question,file,table)
