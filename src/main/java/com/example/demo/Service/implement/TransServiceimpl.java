@@ -1,28 +1,158 @@
 package com.example.demo.Service.implement;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
+import com.example.demo.Dao.TeamMapper;
+import com.example.demo.Dao.TransMapper;
+import com.example.demo.Dao.TranshandleMapper;
+import com.example.demo.Dao.UserinfoMapper;
+import com.example.demo.Model.Trans;
+import com.example.demo.Model.Transhandle;
+import com.example.demo.Model.User;
+import com.example.demo.Model.Userinfo;
 import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.TransService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class TransServiceimpl implements TransService {
 
+    @Autowired
+    UserinfoMapper userinfoMapper;
+    @Autowired
+    TeamMapper teamMapper;
+    @Autowired
+    TranshandleMapper transhandleMapper;
+    @Autowired
+    TransMapper transMapper;
+
+    private Msg msg;
+
     @Override
-    public Msg LaunchTransService(HttpServletRequest request) {
-        // TODO Auto-generated method stub
-        return null;
+    public Msg LaunchTransService(HttpServletRequest request) throws IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        int userid = user.getUserid();
+
+        StringBuilder data = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line = null;
+        while (null != (line = reader.readLine()))
+            data.append(line);
+        String[] list = data.toString().split("[\\&\\=]");
+        String teamname = list[1];
+        String transtype = list[3];
+        String value = list[5];
+        data = null;
+        reader = null;
+
+        List<Trans> translist = transMapper.getAllTransList();
+        int transid = 0;
+        boolean id_autoincrement_flg = true;
+        for (var transtmp : translist) {
+            if (id_autoincrement_flg) {
+                transid++;
+                if (transtmp.getTransid() != transid) {
+                    id_autoincrement_flg = false;
+                    break;
+                }
+            }
+        }
+        transid++;
+
+        int teamid = teamMapper.getTeamIdByName(teamname);
+
+        Userinfo userinfo = new Userinfo();
+        userinfo.setUserid(userid);
+        userinfo.setTeamid(teamid);
+        Userinfo userinforet = userinfoMapper.getUserinfoByObj(userinfo);
+        if (!userinforet.isLeader()) {
+            msg = Msg.LAUNCHTRANS_FAIL;
+            return msg;
+        }
+
+        Trans trans = new Trans();
+        trans.setTeamid(teamid);
+        trans.setTransid(transid);
+        trans.setTranstype(transtype);
+        trans.setValue(value);
+
+        int ret = transMapper.insertTrans(trans);
+        assert (ret > 0);
+
+        List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByTeamid(teamid);
+        for (var userinfotmp : userinfolist) {
+            Transhandle transhandle = new Transhandle();
+            transhandle.setUserid(userinfotmp.getUserid());
+            transhandle.setTransid(transid);
+            transhandle.setIshandled(false);
+            ret = transhandleMapper.insertTranshandle(transhandle);
+            assert (ret > 0);
+        }
+
+        msg = Msg.LAUNCHTRANS_SUCC;
+        return msg;
     }
 
     @Override
-    public Msg TransHandleService(HttpServletRequest request) {
-        // TODO Auto-generated method stub
-        return null;
+    public Msg TransHandleService(HttpServletRequest request) throws IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        int userid = user.getUserid();
+
+        StringBuilder data = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line = null;
+        while (null != (line = reader.readLine()))
+            data.append(line);
+        String[] list = data.toString().split("[\\&\\=]");
+        String transidstr = list[1];
+        String value = list[3];
+        data = null;
+        reader = null;
+
+        int transid = Integer.parseInt(transidstr);
+
+        Transhandle transhandle = new Transhandle();
+        transhandle.setUserid(userid);
+        transhandle.setTransid(transid);
+        transhandle.setIshandled(true);
+        transhandle.setValue(value);
+        int ret = transhandleMapper.updateTranshandleStatu(transhandle);
+        assert (ret > 0);
+
+        msg = Msg.TRANSHANDLE_SUCC;
+        return msg;
     }
 
     @Override
-    public Msg TransHistoryService(HttpServletRequest request) {
-        // TODO Auto-generated method stub
-        return null;
+    public Msg TransHistoryService(HttpServletRequest request) throws IOException {
+        User user = (User) request.getSession().getAttribute("user");
+        int userid = user.getUserid();
+
+        StringBuilder data = new StringBuilder();
+        BufferedReader reader = request.getReader();
+        String line = null;
+        while (null != (line = reader.readLine()))
+            data.append(line);
+        String[] list = data.toString().split("[\\&\\=]");
+        String transidstr = list[1];
+        data = null;
+        reader = null;
+
+        int transid = Integer.parseInt(transidstr);
+
+        Transhandle transhandle = new Transhandle();
+        transhandle.setUserid(userid);
+        transhandle.setTransid(transid);
+        transhandle.setIshandled(false);
+        int ret = transhandleMapper.updateTranshandleStatu(transhandle);
+        assert (ret > 0);
+
+        msg = Msg.HISTORYTRANS_SUCC;
+        return msg;
     }
-    
+
 }

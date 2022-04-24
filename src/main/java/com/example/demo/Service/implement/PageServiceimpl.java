@@ -48,7 +48,7 @@ public class PageServiceimpl implements PageService {
         jsonObject.put("unfinnum", unfinnum);
 
         request.getSession().setAttribute("data", jsonObject.toString());
-        msg=Msg.GETINDEXPAGE_SUCC;
+        msg = Msg.GETINDEXPAGE_SUCC;
         return msg;
     }
 
@@ -56,15 +56,32 @@ public class PageServiceimpl implements PageService {
     public Msg TransPageService(HttpServletRequest request) {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
-        List<Transhandle> finTranslist=transhandleMapper.getFinishTranshandleListByUserid(userid);
-        List<Transhandle> unfinTranslist=transhandleMapper.getUnfinishTranshandleListByUserid(userid);
 
-        JSONObject jsonObject=new JSONObject();
+        List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByUserid(userid);
+        List<Integer> memidarr = new ArrayList<>();
+        for (var userinfo : userinfolist) {
+            if (!userinfo.isLeader())
+                continue;
+            List<Userinfo> memidlist = userinfoMapper.getUserinfoListByTeamid(userinfo.getTeamid());
+            for (var mem : memidlist) {
+                if (!memidarr.contains(mem.getUserid())) {
+                    memidarr.add(mem.getUserid());
+                }
+            }
+        }
+        List<Transhandle> finTranslist = new ArrayList<>();
+        for (var memid : memidarr) {
+            finTranslist.addAll(transhandleMapper.getFinishTranshandleListByUserid(memid));
+        }
+
+        List<Transhandle> unfinTranslist = transhandleMapper.getUnfinishTranshandleListByUserid(userid);
+
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("finlist", finTranslist);
         jsonObject.put("unfinlist", unfinTranslist);
 
         request.getSession().setAttribute("data", jsonObject.toString());
-        msg=Msg.GETINDEXPAGE_SUCC;
+        msg = Msg.GETINDEXPAGE_SUCC;
         return msg;
     }
 
@@ -73,28 +90,28 @@ public class PageServiceimpl implements PageService {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        List<Userinfo> userinfolist=userinfoMapper.getUserinfoListByUserid(userid);
-        List<Integer> memidarr=new ArrayList<>();
-        for(var userinfo:userinfolist){
-            List<Userinfo>memidlist=userinfoMapper.getUserinfoListByTeamid(userinfo.getTeamid());
-            for(var mem:memidlist){
-                if(!memidarr.contains(mem.getUserid())){
+        List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByUserid(userid);
+        List<Integer> memidarr = new ArrayList<>();
+        for (var userinfo : userinfolist) {
+            List<Userinfo> memidlist = userinfoMapper.getUserinfoListByTeamid(userinfo.getTeamid());
+            for (var mem : memidlist) {
+                if (!memidarr.contains(mem.getUserid())) {
                     memidarr.add(mem.getUserid());
                 }
             }
         }
 
-        List<String> namelist=new ArrayList<>();
-        for(var memid:memidarr){
-            User memuser=usermapper.getUserById(memid);
+        List<String> namelist = new ArrayList<>();
+        for (var memid : memidarr) {
+            User memuser = usermapper.getUserById(memid);
             namelist.add(memuser.getUsername());
         }
 
-        JSONObject jsonObject=new JSONObject();
+        JSONObject jsonObject = new JSONObject();
         jsonObject.put("memlist", namelist);
 
         request.getSession().setAttribute("data", jsonObject.toString());
-        msg=Msg.GETTEAMMEMPAGE_SUCC;
+        msg = Msg.GETTEAMMEMPAGE_SUCC;
         return msg;
     }
 

@@ -4,9 +4,11 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-23 17:43:15
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-23 22:52:18
+ * @LastEditTime: 2022-04-24 22:05:32
  */
 package com.example.demo.Service.interfaces;
+
+import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,27 +16,30 @@ import com.example.demo.Msg.Msg;
 
 public interface TransService {
     /**
-     * @description:
+     * @description: Add a transction for user's team.
      * @param {HttpServletRequest} request
      * @return {Msg}
      * @author: Zhangchunhao
+     * @throws IOException
      */
-    Msg LaunchTransService(HttpServletRequest request);
+    Msg LaunchTransService(HttpServletRequest request) throws IOException;
 
     /**
-     * @description:
+     * @description: Handle a user's action to a transction.
      * @param {HttpServletRequest} request
      * @return {Msg}
      * @author: Zhangchunhao
+     * @throws IOException
      */
-    Msg TransHandleService(HttpServletRequest request);
+    Msg TransHandleService(HttpServletRequest request) throws IOException;
 
     /**
-     * @description:
+     * @description: alter user's handled transctions statu.
      * @param {HttpServletRequest} request
      * @return {Msg}
      * @author: Zhangchunhao
+     * @throws IOException
      */
-    Msg TransHistoryService(HttpServletRequest request);
+    Msg TransHistoryService(HttpServletRequest request) throws IOException;
 
 }

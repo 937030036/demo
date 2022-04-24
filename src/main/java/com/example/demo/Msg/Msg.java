@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-07 17:57:14
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-23 22:32:49
+ * @LastEditTime: 2022-04-24 22:04:59
  */
 
 package com.example.demo.Msg;
@@ -27,7 +27,13 @@ public enum Msg {
     JOINTEAM_SUCC("加入团队成功"),
     JOINTEAM_FAIL("团队名或密码错误"),
     DISBANDTEAM_SUCC("解散团队成功"),
-    DISBANDTEAM_FAIL("解散团队失败，确认团队信息和队长身份");
+    DISBANDTEAM_FAIL("解散团队失败，确认团队信息和队长身份"),
+    LAUNCHTRANS_SUCC("发起事务成功"),
+    LAUNCHTRANS_FAIL("发起事务失败，确认团队信息和队长身份"),
+    TRANSHANDLE_SUCC("处理事务成功"),
+    TRANSHANDLE_FAIL("处理事务失败"),
+    HISTORYTRANS_SUCC("处理历史事务成功"),
+    HISTORYTRANS_FAIL("处理历史事务失败");
 
     private String msg_str;
 

@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.example.demo.Dao.TeamMapper;
 import com.example.demo.Dao.TransMapper;
 import com.example.demo.Dao.TranshandleMapper;
-import com.example.demo.Dao.UserMapper;
 import com.example.demo.Dao.UserinfoMapper;
 import com.example.demo.Model.Team;
 import com.example.demo.Model.Trans;
@@ -23,8 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class TeamServiceimpl implements TeamService {
 
-    @Autowired
-    UserMapper usermapper;
     @Autowired
     UserinfoMapper userinfoMapper;
     @Autowired
@@ -141,49 +138,49 @@ public class TeamServiceimpl implements TeamService {
         data = null;
         reader = null;
 
-        int teamid=0;
-        msg=Msg.DISBANDTEAM_FAIL;
+        int teamid = 0;
+        msg = Msg.DISBANDTEAM_FAIL;
         List<Team> teamlist = teamMapper.getTeamList();
-        for(var teamtmp:teamlist){
-            if(teamtmp.getTeamname().equals(teamname)){
-                if(teamtmp.getTeampassword().equals(teampassword)){
-                    Userinfo userinfo=new Userinfo();
+        for (var teamtmp : teamlist) {
+            if (teamtmp.getTeamname().equals(teamname)) {
+                if (teamtmp.getTeampassword().equals(teampassword)) {
+                    Userinfo userinfo = new Userinfo();
                     userinfo.setUserid(userid);
                     userinfo.setTeamid(teamtmp.getTeamid());
-                    Userinfo userinforet=userinfoMapper.getUserinfoByObj(userinfo);
-                    if(userinforet.isLeader()){
-                        msg=Msg.DISBANDTEAM_SUCC;
-                        teamid=teamtmp.getTeamid();
+                    Userinfo userinforet = userinfoMapper.getUserinfoByObj(userinfo);
+                    if (userinforet.isLeader()) {
+                        msg = Msg.DISBANDTEAM_SUCC;
+                        teamid = teamtmp.getTeamid();
                         break;
-                    }
-                    else break;
-                }
-                else break;
+                    } else
+                        break;
+                } else
+                    break;
             }
         }
 
-        
-        if(msg.equals(Msg.DISBANDTEAM_SUCC)){
-            assert(teamid>0);
-            List<Integer> transidlist =new ArrayList<>();
-            List<Trans> translist=transMapper.getTransListByTeamid(teamid);
-            for(var trantmp:translist){
-                if(!transidlist.contains(trantmp.getTransid())) transidlist.add(trantmp.getTransid());
+        if (msg.equals(Msg.DISBANDTEAM_SUCC)) {
+            assert (teamid > 0);
+            List<Integer> transidlist = new ArrayList<>();
+            List<Trans> translist = transMapper.getTransListByTeamid(teamid);
+            for (var trantmp : translist) {
+                if (!transidlist.contains(trantmp.getTransid()))
+                    transidlist.add(trantmp.getTransid());
             }
 
-            for(var transid:transidlist){
-                int ret=transhandleMapper.deleteTranshandleByTransid(transid);
-                assert(ret>0);
+            for (var transid : transidlist) {
+                int ret = transhandleMapper.deleteTranshandleByTransid(transid);
+                assert (ret > 0);
             }
-            
-            int ret=transMapper.deleteTransByTeamid(teamid);
-            assert(ret>0);
 
-            ret=userinfoMapper.deleteUserinfoByTeamid(teamid);
-            assert(ret>0);
+            int ret = transMapper.deleteTransByTeamid(teamid);
+            assert (ret > 0);
 
-            ret=teamMapper.deleteTeam(teamid);
-            assert(ret>0);
+            ret = userinfoMapper.deleteUserinfoByTeamid(teamid);
+            assert (ret > 0);
+
+            ret = teamMapper.deleteTeam(teamid);
+            assert (ret > 0);
         }
 
         return msg;

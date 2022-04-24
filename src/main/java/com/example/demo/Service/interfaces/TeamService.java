@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-23 17:43:03
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-23 22:51:57
+ * @LastEditTime: 2022-04-24 17:31:26
  */
 package com.example.demo.Service.interfaces;
 
@@ -16,7 +16,7 @@ import com.example.demo.Msg.Msg;
 
 public interface TeamService {
     /**
-     * @description:
+     * @description: Register a team for current user.
      * @param {HttpServletRequest} request
      * @return {Msg}
      * @author: Zhangchunhao
@@ -24,7 +24,7 @@ public interface TeamService {
     Msg RegisterTeamService(HttpServletRequest request) throws IOException;
 
     /**
-     * @description:
+     * @description: Add the user into a team.
      * @param {HttpServletRequest} request
      * @return {Msg}
      * @author: Zhangchunhao
@@ -32,7 +32,7 @@ public interface TeamService {
     Msg JoinTeamService(HttpServletRequest request) throws IOException;
 
     /**
-     * @description:
+     * @description: Disband team the user own.
      * @param {HttpServletRequest} request
      * @return {Msg}
      * @author: Zhangchunhao
