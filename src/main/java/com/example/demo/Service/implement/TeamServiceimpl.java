@@ -19,7 +19,9 @@ import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.TeamService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TeamServiceimpl implements TeamService {
 
     @Autowired
@@ -38,16 +40,8 @@ public class TeamServiceimpl implements TeamService {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String teamname = list[1];
-        String teampassword = list[3];
-        data = null;
-        reader = null;
+        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
+        String teampassword=new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"),"UTF-8");
 
         int teamid = 0;
         boolean id_increment_flg = true;
@@ -89,16 +83,8 @@ public class TeamServiceimpl implements TeamService {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String teamname = list[1];
-        String teampassword = list[3];
-        data = null;
-        reader = null;
+        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
+        String teampassword=new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"),"UTF-8");
 
         List<Team> teamlist = teamMapper.getTeamList();
         for (var teamtmp : teamlist) {
@@ -127,16 +113,8 @@ public class TeamServiceimpl implements TeamService {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String teamname = list[1];
-        String teampassword = list[3];
-        data = null;
-        reader = null;
+        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
+        String teampassword=new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"),"UTF-8");
 
         int teamid = 0;
         msg = Msg.DISBANDTEAM_FAIL;

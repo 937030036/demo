@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Sign up</title>
+    <title>注册</title>
   </head>
   <body>
     <br />

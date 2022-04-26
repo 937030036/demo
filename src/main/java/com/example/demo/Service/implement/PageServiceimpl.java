@@ -15,10 +15,14 @@ import com.example.demo.Model.Userinfo;
 import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.PageService;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import net.sf.json.JSON;
 import net.sf.json.JSONObject;
 
+@Service
 public class PageServiceimpl implements PageService {
 
     @Autowired
@@ -31,21 +35,29 @@ public class PageServiceimpl implements PageService {
     TranshandleMapper transhandleMapper;
 
     private Msg msg;
+    private final org.slf4j.Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
 
     @Override
     public Msg IndexPageService(HttpServletRequest request) {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
+        logger.info("得到用户id"+userid);
+
         List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByUserid(userid);
         List<String> tnamelist = new ArrayList<>();
         for (var userinfo : userinfolist) {
             tnamelist.add(teamMapper.getTeamById(userinfo.getTeamid()).getTeamname());
         }
+        
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("teamlist", tnamelist);
 
         int unfinnum = transhandleMapper.getUnfinishNumByUserid(userid);
         jsonObject.put("unfinnum", unfinnum);
+
+
+        //JSONObject json =  JSON.parseObject("");
+
 
         request.getSession().setAttribute("data", jsonObject.toString());
         msg = Msg.GETINDEXPAGE_SUCC;

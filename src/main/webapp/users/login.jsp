@@ -1,9 +1,17 @@
+<!--
+ * @Description: 
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-22 16:45:11
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-26 21:14:14
+-->
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>Sign in</title>
+    <title>登录</title>
   </head>
   <body>
     <br />
@@ -17,7 +25,7 @@
         <div align="center">
           <input
             type="text"
-            name="user"
+            name="username"
             placeholder="用户名"
             required="required"
           />

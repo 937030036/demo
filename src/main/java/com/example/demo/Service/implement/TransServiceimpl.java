@@ -37,17 +37,9 @@ public class TransServiceimpl implements TransService {
         User user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String teamname = list[1];
-        String transtype = list[3];
-        String value = list[5];
-        data = null;
-        reader = null;
+        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
+        String value=new String((request.getParameter("value")).getBytes("ISO-8859-1"),"UTF-8");
+        String transtype=new String((request.getParameter("transtype")).getBytes("ISO-8859-1"),"UTF-8");
 
         List<Trans> translist = transMapper.getAllTransList();
         int transid = 0;
@@ -102,16 +94,8 @@ public class TransServiceimpl implements TransService {
         User user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String transidstr = list[1];
-        String value = list[3];
-        data = null;
-        reader = null;
+        String transidstr=new String((request.getParameter("transidstr")).getBytes("ISO-8859-1"),"UTF-8");
+        String value=new String((request.getParameter("value")).getBytes("ISO-8859-1"),"UTF-8");
 
         int transid = Integer.parseInt(transidstr);
 
@@ -132,16 +116,7 @@ public class TransServiceimpl implements TransService {
         User user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String transidstr = list[1];
-        data = null;
-        reader = null;
-
+        String transidstr=new String((request.getParameter("transidstr")).getBytes("ISO-8859-1"),"UTF-8");
         int transid = Integer.parseInt(transidstr);
 
         Transhandle transhandle = new Transhandle();

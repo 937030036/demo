@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-06 16:58:04
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-26 22:36:51
+ */
 package com.example.demo.Controller;
 
 import java.io.IOException;
@@ -23,13 +31,6 @@ public class UserSignCtler {
         return "./users/login";
     }
 
-    // @RequestMapping("/GetMsg")
-    // public String showMsg() {
-    // String tmp = msg.getpath();
-    // msg = Msg.NO_MSG;
-    // return tmp;
-    // }
-
     @RequestMapping("/SigninHandle")
     public void signinHandle(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -47,6 +48,7 @@ public class UserSignCtler {
             response.sendRedirect(request.getContextPath() + "/user/Meau");
             return;
         }
+
         throw new IllegalArgumentException("登录异常");
     }
 

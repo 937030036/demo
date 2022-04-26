@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-07 10:59:45
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-26 22:13:38
+ */
 package com.example.demo.Controller;
 
 import java.io.File;
@@ -5,7 +13,11 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.example.demo.BeanUtils;
+import com.example.demo.Service.interfaces.PageService;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -14,11 +26,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/user/Meau")
-public class UserMeauCtler {
+public class UserIndexCtler {
+
+    private PageService pageservice = BeanUtils.getBean(PageService.class);
 
     @RequestMapping("")
-    public String showMeau() {
-        return "./users/meau";
+    public String showMeau(HttpServletRequest request) {
+        pageservice.IndexPageService(request);
+        return "./users/Index";
     }
 
     @RequestMapping("/pic")

@@ -2,6 +2,7 @@ package com.example.demo.Service.implement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,16 +32,19 @@ public class SignServiceImpl implements SignService {
     public Msg signinHandleService(HttpServletRequest request) throws IOException {
         List<User> userList = usermapper.getUserList();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String username = list[1];
-        String password = list[3];
-        data = null;
-        reader = null;
+        String username=new String((request.getParameter("username")).getBytes("ISO-8859-1"),"UTF-8");
+        String password=new String((request.getParameter("password")).getBytes("ISO-8859-1"),"UTF-8");
+
+        // StringBuilder data = new StringBuilder();
+        // BufferedReader reader = request.getReader();
+        // String line = null;
+        // while (null != (line = reader.readLine()))
+        //     data.append(line);
+        // String[] list = data.toString().split("[\\&\\=]");
+        // String username = list[1];
+        // String password = list[3];
+        // data = null;
+        // reader = null;
 
         for (var user : userList) {
             if (user.getUsername().equals(username)) {
@@ -74,16 +78,8 @@ public class SignServiceImpl implements SignService {
     public Msg signupHandleService(HttpServletRequest request) throws IOException {
         List<User> userList = usermapper.getUserList();
 
-        StringBuilder data = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line = null;
-        while (null != (line = reader.readLine()))
-            data.append(line);
-        String[] list = data.toString().split("[\\&\\=]");
-        String username = list[1];
-        String password = list[3];
-        data = null;
-        reader = null;
+        String username=new String((request.getParameter("username")).getBytes("ISO-8859-1"),"UTF-8");
+        String password=new String((request.getParameter("password")).getBytes("ISO-8859-1"),"UTF-8");
 
         int userid=0;
         boolean id_increment_flg=true;
