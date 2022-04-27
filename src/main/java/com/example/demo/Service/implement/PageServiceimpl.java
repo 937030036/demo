@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.demo.Dao.TeamMapper;
 import com.example.demo.Dao.TranshandleMapper;
 import com.example.demo.Dao.UserMapper;
@@ -18,9 +19,6 @@ import com.example.demo.Service.interfaces.PageService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import net.sf.json.JSON;
-import net.sf.json.JSONObject;
 
 @Service
 public class PageServiceimpl implements PageService {
@@ -41,23 +39,19 @@ public class PageServiceimpl implements PageService {
     public Msg IndexPageService(HttpServletRequest request) {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
-        logger.info("得到用户id"+userid);
+        logger.info("得到用户id" + userid);
 
         List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByUserid(userid);
         List<String> tnamelist = new ArrayList<>();
         for (var userinfo : userinfolist) {
             tnamelist.add(teamMapper.getTeamById(userinfo.getTeamid()).getTeamname());
         }
-        
+
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("teamlist", tnamelist);
 
         int unfinnum = transhandleMapper.getUnfinishNumByUserid(userid);
         jsonObject.put("unfinnum", unfinnum);
-
-
-        //JSONObject json =  JSON.parseObject("");
-
 
         request.getSession().setAttribute("data", jsonObject.toString());
         msg = Msg.GETINDEXPAGE_SUCC;

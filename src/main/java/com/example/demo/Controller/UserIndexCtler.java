@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-07 10:59:45
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-26 22:13:38
+ * @LastEditTime: 2022-04-27 17:01:15
  */
 package com.example.demo.Controller;
 
@@ -16,9 +16,9 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.example.demo.BeanUtils;
 import com.example.demo.Service.interfaces.PageService;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("/user/Meau")
 public class UserIndexCtler {
 
-    private PageService pageservice = BeanUtils.getBean(PageService.class);
+    @Autowired
+    private PageService pageservice;
+    // private PageService pageservice = BeanUtils.getBean(PageService.class);
 
     @RequestMapping("")
     public String showMeau(HttpServletRequest request) {
