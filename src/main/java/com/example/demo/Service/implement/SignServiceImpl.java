@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-13 17:55:09
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-27 20:38:04
+ */
 package com.example.demo.Service.implement;
 
 import java.io.IOException;
@@ -30,19 +38,8 @@ public class SignServiceImpl implements SignService {
     public Msg signinHandleService(HttpServletRequest request) throws IOException {
         List<User> userList = usermapper.getUserList();
 
-        String username=new String((request.getParameter("username")).getBytes("ISO-8859-1"),"UTF-8");
-        String password=new String((request.getParameter("password")).getBytes("ISO-8859-1"),"UTF-8");
-
-        // StringBuilder data = new StringBuilder();
-        // BufferedReader reader = request.getReader();
-        // String line = null;
-        // while (null != (line = reader.readLine()))
-        //     data.append(line);
-        // String[] list = data.toString().split("[\\&\\=]");
-        // String username = list[1];
-        // String password = list[3];
-        // data = null;
-        // reader = null;
+        String username = new String((request.getParameter("username")).getBytes("ISO-8859-1"), "UTF-8");
+        String password = new String((request.getParameter("password")).getBytes("ISO-8859-1"), "UTF-8");
 
         for (var user : userList) {
             if (user.getUsername().equals(username)) {
@@ -76,24 +73,26 @@ public class SignServiceImpl implements SignService {
     public Msg signupHandleService(HttpServletRequest request) throws IOException {
         List<User> userList = usermapper.getUserList();
 
-        String username=new String((request.getParameter("username")).getBytes("ISO-8859-1"),"UTF-8");
-        String password=new String((request.getParameter("password")).getBytes("ISO-8859-1"),"UTF-8");
+        String username = new String((request.getParameter("username")).getBytes("ISO-8859-1"), "UTF-8");
+        String password = new String((request.getParameter("password")).getBytes("ISO-8859-1"), "UTF-8");
 
-        int userid=0;
-        boolean id_increment_flg=true;
+        int userid = 0;
+        boolean id_increment_flg = true;
         for (var user : userList) {
-            if(id_increment_flg){
+            if (id_increment_flg) {
                 userid++;
-                if(user.getUserid()!=userid)    id_increment_flg=false;
-                
-            } 
+                if (user.getUserid() != userid)
+                    id_increment_flg = false;
+
+            }
             if (user.getUsername().equals(username)) {
                 logger.info(username + " already exists");
                 msg = Msg.USERNAME_EXIST;
                 return msg;
             }
         }
-        if(userid==0)   userid=1;
+        if (userid == 0)
+            userid = 1;
         User user = new User();
         user.setUserid(userid);
         user.setUsername(username);

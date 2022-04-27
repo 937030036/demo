@@ -93,7 +93,7 @@ public class TransServiceimpl implements TransService {
         User user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        String transidstr=new String((request.getParameter("transidstr")).getBytes("ISO-8859-1"),"UTF-8");
+        String transidstr=new String((request.getParameter("transid")).getBytes("ISO-8859-1"),"UTF-8");
         String value=new String((request.getParameter("value")).getBytes("ISO-8859-1"),"UTF-8");
 
         int transid = Integer.parseInt(transidstr);

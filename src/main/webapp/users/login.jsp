@@ -1,11 +1,3 @@
-<!--
- * @Description: 
- * @Version: 
- * @Autor: Zhangchunhao
- * @Date: 2022-04-22 16:45:11
- * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-26 21:14:14
--->
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
