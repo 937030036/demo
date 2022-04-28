@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-07 10:59:45
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-27 17:01:15
+ * @LastEditTime: 2022-04-28 21:05:48
  */
 package com.example.demo.Controller;
 
@@ -16,26 +16,58 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.PageService;
+import com.example.demo.Service.interfaces.TeamService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/user/Meau")
+@RequestMapping("")
 public class UserIndexCtler {
 
     @Autowired
-    private PageService pageservice;
+    private PageService pageService;
+
+    @Autowired
+    private TeamService teamService;
     // private PageService pageservice = BeanUtils.getBean(PageService.class);
 
-    @RequestMapping("")
-    public String showMeau(HttpServletRequest request) {
-        pageservice.IndexPageService(request);
+    private Msg msg;
+
+    @RequestMapping(value = "Index/page", method = RequestMethod.GET)
+    public String getIndexPage(HttpServletRequest request) {
+        pageService.IndexPageService(request);
+        assert (msg.equals(Msg.GETINDEXPAGE_SUCC));
         return "./users/Index";
+    }
+
+    @RequestMapping(value = "Team", method = RequestMethod.POST)
+    public void registerTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String aa = request.getMethod();
+        msg = teamService.RegisterTeamService(request);
+        request.getSession().setAttribute("msg", msg.toString());
+
+        response.sendRedirect(request.getContextPath() + "Index/page");
+    }
+
+    @RequestMapping(value = "Team/userid", method = RequestMethod.PUT)
+    public void joinTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        msg = teamService.JoinTeamService(request);
+        request.getSession().setAttribute("msg", msg.toString());
+        response.sendRedirect(request.getContextPath() + "Index/page");
+    }
+
+    @RequestMapping(value = "Team/id", method = RequestMethod.DELETE)
+    public void disbandTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        msg = teamService.DisbandTeamService(request);
+        request.getSession().setAttribute("msg", msg.toString());
+        response.sendRedirect(request.getContextPath() + "Index/page");
     }
 
     @RequestMapping("/pic")

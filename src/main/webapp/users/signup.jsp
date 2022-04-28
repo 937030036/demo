@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-22 16:45:52
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-28 18:03:32
+-->
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -13,11 +21,11 @@
     </div>
     <br />
     <div class="login">
-      <form action="SignupHandle" method="post">
+      <form action="/User" method="post">
         <div align="center">
           <input
             type="text"
-            name="user"
+            name="username"
             placeholder="用户名"
             required="required"
           />

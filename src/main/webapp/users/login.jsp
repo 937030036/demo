@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Version: 
+ * @Autor: Zhangchunhao
+ * @Date: 2022-04-22 16:45:11
+ * @LastEditors: Zhanchunhao
+ * @LastEditTime: 2022-04-28 17:55:45
+-->
 <%@ page language="java" pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
@@ -13,7 +21,7 @@
     </div>
     <br />
     <div class="login">
-      <form action="SigninHandle" method="post">
+      <form action="/SigninHandle" method="get">
         <div align="center">
           <input
             type="text"
