@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-07 10:59:45
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-28 21:05:48
+ * @LastEditTime: 2022-04-29 09:31:23
  */
 package com.example.demo.Controller;
 
@@ -49,7 +49,6 @@ public class UserIndexCtler {
 
     @RequestMapping(value = "Team", method = RequestMethod.POST)
     public void registerTeam(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String aa = request.getMethod();
         msg = teamService.RegisterTeamService(request);
         request.getSession().setAttribute("msg", msg.toString());
 
