@@ -67,7 +67,7 @@ public class SignServiceTest {
 	@Test
 	public void Mocktest() throws IOException {
 		MockHttpServletRequest Request = new MockHttpServletRequest();
-		Request.addParameter("username", "aaa");
+		Request.addParameter("username", "aa");
 		Request.addParameter("password", "bb");
 		Msg msg;
 
