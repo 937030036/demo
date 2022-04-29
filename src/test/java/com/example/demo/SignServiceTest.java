@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-06 16:57:18
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-27 16:58:39
+ * @LastEditTime: 2022-04-29 09:55:04
  */
 package com.example.demo;
 
@@ -67,7 +67,7 @@ public class SignServiceTest {
 	@Test
 	public void Mocktest() throws IOException {
 		MockHttpServletRequest Request = new MockHttpServletRequest();
-		Request.addParameter("username", "aa");
+		Request.addParameter("username", "aaa");
 		Request.addParameter("password", "bb");
 		Msg msg;
 
@@ -75,7 +75,7 @@ public class SignServiceTest {
 
 		User user = (User) Request.getSession().getAttribute("user");
 		assert (user.getUserid() == 55);
-		assert (user.getUsername().equals("aa"));
+		assert (user.getUsername().equals("aaa"));
 		assert (user.getPassword().equals("bb"));
 		assert (msg.equals(Msg.SIGNIN_SUCC));
 
