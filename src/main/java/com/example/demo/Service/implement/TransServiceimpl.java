@@ -54,7 +54,7 @@ public class TransServiceimpl implements TransService {
                 }
             }
         }
-        transid++;
+        if(transid==0) transid=1;
 
         int teamid = teamMapper.getTeamIdByName(teamname);
 
