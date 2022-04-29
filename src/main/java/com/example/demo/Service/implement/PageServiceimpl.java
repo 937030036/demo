@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.demo.Dao.TeamMapper;
+import com.example.demo.Dao.TransMapper;
 import com.example.demo.Dao.TranshandleMapper;
 import com.example.demo.Dao.UserMapper;
 import com.example.demo.Dao.UserinfoMapper;
@@ -31,6 +32,9 @@ public class PageServiceimpl implements PageService {
     TeamMapper teamMapper;
     @Autowired
     TranshandleMapper transhandleMapper;
+
+    @Autowired
+    TransMapper transMapper;
 
     private Msg msg;
     private final org.slf4j.Logger logger = LoggerFactory.getLogger(SignServiceImpl.class);
@@ -75,6 +79,7 @@ public class PageServiceimpl implements PageService {
                 }
             }
         }
+        if(!memidarr.contains(userid))  memidarr.add(userid);
         List<Transhandle> finTranslist = new ArrayList<>();
         for (var memid : memidarr) {
             finTranslist.addAll(transhandleMapper.getFinishTranshandleListByUserid(memid));
@@ -82,9 +87,28 @@ public class PageServiceimpl implements PageService {
 
         List<Transhandle> unfinTranslist = transhandleMapper.getUnfinishTranshandleListByUserid(userid);
 
+        List<JSONObject> fintranslistjson= new ArrayList<>();
+        List<JSONObject> unfintranslistjson= new ArrayList<>();
+
+        for(Transhandle fintmp:finTranslist){
+            JSONObject jsontmp =new JSONObject();
+            jsontmp.put("transid", fintmp.getTransid());
+            jsontmp.put("transtype",transMapper.getTransByTransid(fintmp.getTransid()).getTranstype());
+            jsontmp.put("value", fintmp.getValue());
+            fintranslistjson.add(jsontmp);
+        }
+
+        for(Transhandle fintmp:unfinTranslist){
+            JSONObject jsontmp =new JSONObject();
+            jsontmp.put("transid", fintmp.getTransid());
+            jsontmp.put("transtype",transMapper.getTransByTransid(fintmp.getTransid()).getTranstype());
+            jsontmp.put("value", fintmp.getValue());
+            unfintranslistjson.add(jsontmp);
+        }
+
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("finlist", finTranslist);
-        jsonObject.put("unfinlist", unfinTranslist);
+        jsonObject.put("finlist", fintranslistjson);
+        jsonObject.put("unfinlist", unfintranslistjson);
 
         request.getSession().setAttribute("data", jsonObject.toString());
         msg = Msg.GETINDEXPAGE_SUCC;
