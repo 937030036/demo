@@ -17,7 +17,9 @@ import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.TransService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TransServiceimpl implements TransService {
 
     @Autowired
@@ -52,7 +54,7 @@ public class TransServiceimpl implements TransService {
                 }
             }
         }
-        transid++;
+        if(transid==0) transid=1;
 
         int teamid = teamMapper.getTeamIdByName(teamname);
 
@@ -80,6 +82,7 @@ public class TransServiceimpl implements TransService {
             transhandle.setUserid(userinfotmp.getUserid());
             transhandle.setTransid(transid);
             transhandle.setIshandled(false);
+            transhandle.setValue(value);
             ret = transhandleMapper.insertTranshandle(transhandle);
             assert (ret > 0);
         }
