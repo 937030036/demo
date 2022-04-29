@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-22 15:45:10
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-28 21:18:37
+ * @LastEditTime: 2022-04-29 14:09:35
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%> <%@ page import="
@@ -59,13 +59,17 @@ int unfinnum;
     <%for(int i=0;i<6;i++){ %>
       <br>
     <%}%>
-    <p align="center">
-        <button name="transhandle" type="button" onclick="transhandle()" style="color: rgb(166, 53, 194);width: 500px;;height: 30px;">处理你的事务</button>
-    </p>
-    <%for(int i=0;i<6;i++){ %>
-      <br>
-    <%}%>
-    
+    <form action="/Trans/page" method="get" align="center">
+      <div>
+        <button name="transhandle" type="submit" style="color: rgb(166, 53, 194);width: 500px;;height: 30px;">处理你的事务</button>
+      </div>
+    </form>
+    <br>
+    <form action="/Team/page" method="get" align="center">
+      <div>
+        <button name="TeamPage" type="submit"  style="color: rgb(100, 233, 102);width: 500px;;height: 30px;">团队信息</button>
+      </div>  
+    </form>
   </body>
 </html>
 <script>
@@ -83,10 +87,5 @@ int unfinnum;
     document.teaminfo.action="/Team/id";
     document.teaminfo._method.value="delete";
     document.teaminfo.submit();
-  }
-  function transhandle(){
-    document.transhandle.method="get";
-    document.transhandle.action="/Trans/page";
-    document.transhandle.submit();
   }
 </script>

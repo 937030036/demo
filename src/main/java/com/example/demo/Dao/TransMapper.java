@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-23 12:50:26
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-23 22:44:44
+ * @LastEditTime: 2022-04-29 15:24:51
  */
 
 package com.example.demo.Dao;
@@ -65,4 +65,13 @@ public interface TransMapper {
      * @author: Zhangchunhao
      */
     int deleteTransByObj(Trans trans);
+
+    @Select("select * from trans where transid=#{transid}")
+    /**
+     * @description: Get a trans by transid. 
+     * @param {int} transid
+     * @return {Trans}
+     * @author: Zhangchunhao
+     */        
+    Trans getTransByTransid(int transid);
 }
