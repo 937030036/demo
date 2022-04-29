@@ -17,7 +17,9 @@ import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.TransService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TransServiceimpl implements TransService {
 
     @Autowired
@@ -36,9 +38,9 @@ public class TransServiceimpl implements TransService {
         User user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
-        String value=new String((request.getParameter("value")).getBytes("ISO-8859-1"),"UTF-8");
-        String transtype=new String((request.getParameter("transtype")).getBytes("ISO-8859-1"),"UTF-8");
+        String teamname = new String((request.getParameter("teamname")).getBytes("ISO-8859-1"), "UTF-8");
+        String value = new String((request.getParameter("value")).getBytes("ISO-8859-1"), "UTF-8");
+        String transtype = new String((request.getParameter("transtype")).getBytes("ISO-8859-1"), "UTF-8");
 
         List<Trans> translist = transMapper.getAllTransList();
         int transid = 0;
@@ -80,6 +82,7 @@ public class TransServiceimpl implements TransService {
             transhandle.setUserid(userinfotmp.getUserid());
             transhandle.setTransid(transid);
             transhandle.setIshandled(false);
+            transhandle.setValue(value);
             ret = transhandleMapper.insertTranshandle(transhandle);
             assert (ret > 0);
         }
@@ -93,8 +96,8 @@ public class TransServiceimpl implements TransService {
         User user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        String transidstr=new String((request.getParameter("transid")).getBytes("ISO-8859-1"),"UTF-8");
-        String value=new String((request.getParameter("value")).getBytes("ISO-8859-1"),"UTF-8");
+        String transidstr = new String((request.getParameter("transid")).getBytes("ISO-8859-1"), "UTF-8");
+        String value = new String((request.getParameter("value")).getBytes("ISO-8859-1"), "UTF-8");
 
         int transid = Integer.parseInt(transidstr);
 
@@ -115,7 +118,7 @@ public class TransServiceimpl implements TransService {
         User user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        String transidstr=new String((request.getParameter("transidstr")).getBytes("ISO-8859-1"),"UTF-8");
+        String transidstr = new String((request.getParameter("transidstr")).getBytes("ISO-8859-1"), "UTF-8");
         int transid = Integer.parseInt(transidstr);
 
         Transhandle transhandle = new Transhandle();

@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-29 13:44:59
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-29 13:51:45
+ * @LastEditTime: 2022-04-29 21:05:19
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%> <%@ page import="
@@ -24,6 +24,18 @@ List<String> namelist;
   <head>
     <meta charset="utf-8" />
     <title>团队界面</title>
+    <style>
+      body{
+        background-image: url(/getpic?pic=teambg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100%;
+      }
+      .hover{
+        font-size: larger;
+        background-color: darkorange;
+    }
+    </style>
   </head>
   
   <body>

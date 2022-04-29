@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-07 10:59:45
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-29 09:31:23
+ * @LastEditTime: 2022-04-29 21:01:23
  */
 package com.example.demo.Controller;
 
@@ -87,8 +87,9 @@ public class UserIndexCtler {
 
     @RequestMapping(value = "/getpic", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseBody
-    public byte[] getPic() throws IOException {
-        File file = new File("src/main/resources/templates/users/pic.png");
+    public byte[] getPic(HttpServletRequest request) throws IOException {
+        String pic= new String(request.getParameter("pic").getBytes("ISO-8859-1"), "UTF-8");
+        File file = new File("src/main/resources/"+pic+".jpg");
         FileInputStream input = new FileInputStream(file);
         byte[] bytes = new byte[input.available()];
         input.read(bytes, 0, input.available());

@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-29 13:34:15
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-29 16:49:33
+ * @LastEditTime: 2022-04-29 21:04:06
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%> <%@ page import="
@@ -26,6 +26,18 @@ List<JSONObject> finlist;
   <head>
     <meta charset="utf-8" />
     <title>事务界面</title>
+    <style>
+        body{
+          background-image: url(/getpic?pic=transbg);
+          background-repeat: no-repeat;
+          background-attachment: fixed;
+          background-size: 100%;
+        }
+        .hover{
+          font-size: larger;
+          background-color: darkorange;
+      }
+      </style>
   </head>
   
   <body>

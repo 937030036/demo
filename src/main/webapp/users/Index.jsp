@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-22 15:45:10
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-29 14:09:35
+ * @LastEditTime: 2022-04-29 21:03:16
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 pageEncoding="UTF-8"%> <%@ page import="
@@ -25,6 +25,18 @@ int unfinnum;
   <head>
     <meta charset="utf-8" />
     <title>主界面</title>
+    <style>
+      body{
+        background-image: url(/getpic?pic=indexbg);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100%;
+      }
+      .hover{
+        font-size: larger;
+        background-color: darkorange;
+    }
+    </style>
   </head>
   
   <body>
@@ -35,7 +47,7 @@ int unfinnum;
       teamlist=(List<String>)json.get("teamlist");
       unfinnum=(int)json.get("unfinnum");
     %>
-    <p id="1" style="color:rgb(235, 235, 240);font-size:20px;text-align:center;">所在团队：</p>
+    <p id="1" style="color:rgb(54, 98, 66);font-size:20px;text-align:center;">所在团队：</p>
     <%for(String teamname:teamlist){ %>
       <p id="2" style="color:rgb(145, 138, 139);font-size:20px;text-align:center;"><%= unfinnum %></p>
     <%}%>
