@@ -248,4 +248,45 @@ public class TransServiceTest {
 		msg = transService.LaunchTransService(Request);
 		assert (msg.equals(Msg.LAUNCHTRANS_FAIL));
     }
+    @Test
+	public void transhandlesucc() throws IOException {
+
+        User usertmp=new User();
+        usertmp.setUsername("22");
+        usertmp.setUserid(2);
+
+        MockHttpServletRequest Request = new MockHttpServletRequest();
+        Request.addParameter("transid", "1");
+		Request.addParameter("value", "aaaa");
+        Request.getSession().setAttribute("user", usertmp);
+        
+
+        Mockito.when(transhandleMapper.updateTranshandleStatu(any(Transhandle.class))).thenReturn(1);
+
+        Msg msg;
+		msg = transService.TransHandleService(Request);
+		assert (msg.equals(Msg.TRANSHANDLE_SUCC));
+
+    }
+
+
+    @Test
+	public void TransHistorysucc() throws IOException {
+
+        User usertmp=new User();
+        usertmp.setUsername("22");
+        usertmp.setUserid(2);
+
+        MockHttpServletRequest Request = new MockHttpServletRequest();
+        Request.addParameter("transidstr", "1");
+        Request.getSession().setAttribute("user", usertmp);
+        
+
+        Mockito.when(transhandleMapper.updateTranshandleStatu(any(Transhandle.class))).thenReturn(1);
+
+        Msg msg;
+		msg = transService.TransHistoryService(Request);
+		assert (msg.equals(Msg.HISTORYTRANS_SUCC));
+
+    }
 }
