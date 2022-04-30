@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-23 10:43:26
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-24 18:00:56
+ * @LastEditTime: 2022-04-30 21:46:24
  */
 
 package com.example.demo.Dao;
@@ -39,16 +39,7 @@ public interface TeamMapper {
      */
     Team getTeamById(int teamid);
 
-    @Select("select teamid from team where teamname=#{teamname}")
-    /**
-     * @description: Get a teamid by its name.
-     * @param {String} teamname
-     * @return {int}
-     * @author: Zhangchunhao
-     */
-    int getTeamIdByName(String teamname);
-
-    @Insert("insert into team value(#{teamid},#{teamname},#{teampassword}")
+    @Insert("insert into team value(#{teamid},#{teamname},#{teampassword})")
     /**
      * @description: Add a team info.
      * @param {Team} team

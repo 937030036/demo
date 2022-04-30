@@ -79,7 +79,8 @@ public class PageServiceimpl implements PageService {
                 }
             }
         }
-        if(!memidarr.contains(userid))  memidarr.add(userid);
+        if (!memidarr.contains(userid))
+            memidarr.add(userid);
         List<Transhandle> finTranslist = new ArrayList<>();
         for (var memid : memidarr) {
             finTranslist.addAll(transhandleMapper.getFinishTranshandleListByUserid(memid));
@@ -87,21 +88,22 @@ public class PageServiceimpl implements PageService {
 
         List<Transhandle> unfinTranslist = transhandleMapper.getUnfinishTranshandleListByUserid(userid);
 
-        List<JSONObject> fintranslistjson= new ArrayList<>();
-        List<JSONObject> unfintranslistjson= new ArrayList<>();
+        List<JSONObject> fintranslistjson = new ArrayList<>();
+        List<JSONObject> unfintranslistjson = new ArrayList<>();
 
-        for(Transhandle fintmp:finTranslist){
-            JSONObject jsontmp =new JSONObject();
+        for (Transhandle fintmp : finTranslist) {
+            JSONObject jsontmp = new JSONObject();
             jsontmp.put("transid", fintmp.getTransid());
-            jsontmp.put("transtype",transMapper.getTransByTransid(fintmp.getTransid()).getTranstype());
+            jsontmp.put("username", usermapper.getUserById(fintmp.getUserid()).getUsername());
+            jsontmp.put("transtype", transMapper.getTransByTransid(fintmp.getTransid()).getTranstype());
             jsontmp.put("value", fintmp.getValue());
             fintranslistjson.add(jsontmp);
         }
 
-        for(Transhandle fintmp:unfinTranslist){
-            JSONObject jsontmp =new JSONObject();
+        for (Transhandle fintmp : unfinTranslist) {
+            JSONObject jsontmp = new JSONObject();
             jsontmp.put("transid", fintmp.getTransid());
-            jsontmp.put("transtype",transMapper.getTransByTransid(fintmp.getTransid()).getTranstype());
+            jsontmp.put("transtype", transMapper.getTransByTransid(fintmp.getTransid()).getTranstype());
             jsontmp.put("value", fintmp.getValue());
             unfintranslistjson.add(jsontmp);
         }
@@ -111,7 +113,7 @@ public class PageServiceimpl implements PageService {
         jsonObject.put("unfinlist", unfintranslistjson);
 
         request.getSession().setAttribute("data", jsonObject.toString());
-        msg = Msg.GETINDEXPAGE_SUCC;
+        msg = Msg.GETTRANSPAGE_SUCC;
         return msg;
     }
 
@@ -121,21 +123,20 @@ public class PageServiceimpl implements PageService {
         int userid = user.getUserid();
 
         List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByUserid(userid);
-        List<Integer> memidarr = new ArrayList<>();
-        for (var userinfo : userinfolist) {
-            List<Userinfo> memidlist = userinfoMapper.getUserinfoListByTeamid(userinfo.getTeamid());
-            for (var mem : memidlist) {
-                if (!memidarr.contains(mem.getUserid())) {
-                    memidarr.add(mem.getUserid());
-                }
+        List<List<String>> namelist= new ArrayList<>();
+
+        for(var userinfotmp:userinfolist){
+            List<String> sameteammem=new ArrayList<>();
+            sameteammem.add(teamMapper.getTeamById(userinfotmp.getTeamid()).getTeamname());
+
+            List<Userinfo> sameteamuserinfos=userinfoMapper.getUserinfoListByTeamid(userinfotmp.getTeamid());
+            for(var userinfo:sameteamuserinfos){
+                if(userinfo.isLeader()) sameteammem.add("*"+usermapper.getUserById(userinfo.getUserid()).getUsername());
+                else sameteammem.add(usermapper.getUserById(userinfo.getUserid()).getUsername());
             }
+            namelist.add(sameteammem);
         }
 
-        List<String> namelist = new ArrayList<>();
-        for (var memid : memidarr) {
-            User memuser = usermapper.getUserById(memid);
-            namelist.add(memuser.getUsername());
-        }
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("memlist", namelist);

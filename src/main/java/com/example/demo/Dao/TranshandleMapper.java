@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-23 13:07:08
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-23 22:42:08
+ * @LastEditTime: 2022-04-30 19:01:33
  */
 
 package com.example.demo.Dao;
@@ -39,7 +39,7 @@ public interface TranshandleMapper {
      */
     List<Transhandle> getFinishTranshandleListByUserid(int userid);
 
-    @Update("update trans_handle set ishandled=#{ishandled},value=#{value} where transid=#{transid},userid=#{userid}")
+    @Update("update trans_handle set ishandled=#{ishandled},value=#{value} where transid=#{transid} and userid=#{userid}")
     /**
      * @description: Alter handled status.
      * @param {Transhandle} transhandle

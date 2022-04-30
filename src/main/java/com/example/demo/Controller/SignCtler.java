@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-06 16:58:04
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-28 18:08:04
+ * @LastEditTime: 2022-04-30 13:46:23
  */
 package com.example.demo.Controller;
 
@@ -22,17 +22,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @RequestMapping("")
-public class UserSignCtler {
+public class SignCtler {
     private static Msg msg;
 
     private SignService signservice = BeanUtils.getBean(SignService.class);
 
-    @RequestMapping(value = "/Signin/page",method = RequestMethod.GET)
+    @RequestMapping(value = "/Signin/page", method = RequestMethod.GET)
     public String signIn() {
         return "./users/login";
     }
 
-    @RequestMapping(value = "/SigninHandle",method = RequestMethod.GET)
+    @RequestMapping(value = "/SigninHandle", method = RequestMethod.GET)
     public void signinHandle(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         msg = signservice.signinHandleService(request);
@@ -53,12 +53,12 @@ public class UserSignCtler {
         throw new IllegalArgumentException("登录异常");
     }
 
-    @RequestMapping(value = "/Signup/page",method = RequestMethod.GET)
+    @RequestMapping(value = "/Signup/page", method = RequestMethod.GET)
     public String SignUp() {
         return "./users/signup";
     }
 
-    @RequestMapping(value = "/User",method=RequestMethod.POST)
+    @RequestMapping(value = "/User", method = RequestMethod.POST)
     public void signupHandle(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
         msg = signservice.signupHandleService(request);

@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-13 17:55:09
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-27 20:38:04
+ * @LastEditTime: 2022-04-30 14:58:21
  */
 package com.example.demo.Service.implement;
 
@@ -91,8 +91,8 @@ public class SignServiceImpl implements SignService {
                 return msg;
             }
         }
-        if (userid == 0)
-            userid = 1;
+        if (id_increment_flg)
+            userid++;
         User user = new User();
         user.setUserid(userid);
         user.setUsername(username);

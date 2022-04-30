@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import com.example.demo.Dao.TeamMapper;
 import com.example.demo.Dao.TransMapper;
 import com.example.demo.Dao.TranshandleMapper;
+import com.example.demo.Dao.UserMapper;
 import com.example.demo.Dao.UserinfoMapper;
+import com.example.demo.Model.Team;
 import com.example.demo.Model.Trans;
 import com.example.demo.Model.Transhandle;
 import com.example.demo.Model.User;
@@ -30,6 +32,8 @@ public class TransServiceimpl implements TransService {
     TranshandleMapper transhandleMapper;
     @Autowired
     TransMapper transMapper;
+    @Autowired
+    UserMapper userMapper;
 
     private Msg msg;
 
@@ -39,7 +43,7 @@ public class TransServiceimpl implements TransService {
         int userid = user.getUserid();
 
         String teamname = new String((request.getParameter("teamname")).getBytes("ISO-8859-1"), "UTF-8");
-        String value = new String((request.getParameter("value")).getBytes("ISO-8859-1"), "UTF-8");
+        String value = request.getParameter("value");
         String transtype = new String((request.getParameter("transtype")).getBytes("ISO-8859-1"), "UTF-8");
 
         List<Trans> translist = transMapper.getAllTransList();
@@ -54,10 +58,21 @@ public class TransServiceimpl implements TransService {
                 }
             }
         }
-        if(transid==0) transid=1;
+        if (id_autoincrement_flg)
+            transid++;
 
-        int teamid = teamMapper.getTeamIdByName(teamname);
-
+        Integer teamid = 0;
+        List<Team> teamlist=teamMapper.getTeamList();
+        for(Team team: teamlist){
+            if(team.getTeamname().equals(teamname)){
+                teamid=team.getTeamid();
+            }
+        }
+        
+        if(teamid==0){
+            msg = Msg.LAUNCHTRANS_FAIL;
+            return msg;
+        }
         Userinfo userinfo = new Userinfo();
         userinfo.setUserid(userid);
         userinfo.setTeamid(teamid);
@@ -78,6 +93,8 @@ public class TransServiceimpl implements TransService {
 
         List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByTeamid(teamid);
         for (var userinfotmp : userinfolist) {
+            if (userinfotmp.getUserid() == userid)
+                continue;
             Transhandle transhandle = new Transhandle();
             transhandle.setUserid(userinfotmp.getUserid());
             transhandle.setTransid(transid);
@@ -97,9 +114,15 @@ public class TransServiceimpl implements TransService {
         int userid = user.getUserid();
 
         String transidstr = new String((request.getParameter("transid")).getBytes("ISO-8859-1"), "UTF-8");
-        String value = new String((request.getParameter("value")).getBytes("ISO-8859-1"), "UTF-8");
+        String value = request.getParameter("value" + transidstr);
 
         int transid = Integer.parseInt(transidstr);
+
+        if(value==null){
+            value=transMapper.getTransByTransid(transid).getValue();
+        }
+
+   
 
         Transhandle transhandle = new Transhandle();
         transhandle.setUserid(userid);
@@ -115,16 +138,20 @@ public class TransServiceimpl implements TransService {
 
     @Override
     public Msg TransHistoryService(HttpServletRequest request) throws IOException {
-        User user = (User) request.getSession().getAttribute("user");
-        int userid = user.getUserid();
-
-        String transidstr = new String((request.getParameter("transidstr")).getBytes("ISO-8859-1"), "UTF-8");
+        ;
+        String transidstr = new String((request.getParameter("transid")).getBytes("ISO-8859-1"), "UTF-8");
+        String username = request.getParameter("username");
         int transid = Integer.parseInt(transidstr);
+
+        int userid = userMapper.getUseridByName(username);
 
         Transhandle transhandle = new Transhandle();
         transhandle.setUserid(userid);
         transhandle.setTransid(transid);
         transhandle.setIshandled(false);
+
+        Trans trans = transMapper.getTransByTransid(transid);
+        transhandle.setValue(trans.getValue());
         int ret = transhandleMapper.updateTranshandleStatu(transhandle);
         assert (ret > 0);
 

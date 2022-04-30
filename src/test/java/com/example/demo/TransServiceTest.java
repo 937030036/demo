@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-27 17:00:14
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-27 17:00:14
+ * @LastEditTime: 2022-04-30 13:47:19
  */
 package com.example.demo;
 
@@ -17,7 +17,6 @@ import java.util.List;
 import com.example.demo.Dao.TeamMapper;
 import com.example.demo.Dao.TransMapper;
 import com.example.demo.Dao.TranshandleMapper;
-import com.example.demo.Dao.UserMapper;
 import com.example.demo.Dao.UserinfoMapper;
 import com.example.demo.Model.Team;
 import com.example.demo.Model.Trans;
@@ -184,7 +183,7 @@ public class TransServiceTest {
         Request.addParameter("transtype", "ad");
         Request.getSession().setAttribute("user", usertmp);
 
-        Mockito.when(teamMapper.getTeamIdByName(any(String.class))).thenReturn(1);
+        //Mockito.when(teamMapper.getTeamIdByName(any(String.class))).thenReturn(1);
 
         Userinfo infotmp=new Userinfo();
         infotmp.setIsleader(true);
@@ -236,7 +235,7 @@ public class TransServiceTest {
         Request.addParameter("transtype", "bd");
         Request.getSession().setAttribute("user", usertmp);
 
-        Mockito.when(teamMapper.getTeamIdByName(any(String.class))).thenReturn(3);
+        //Mockito.when(teamMapper.getTeamIdByName(any(String.class))).thenReturn(3);
 
         Userinfo infotmp=new Userinfo();
         infotmp.setIsleader(false);

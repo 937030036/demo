@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-23 12:33:49
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-23 22:46:14
+ * @LastEditTime: 2022-04-30 21:50:25
  */
 
 package com.example.demo.Dao;
@@ -39,8 +39,17 @@ public interface UserinfoMapper {
      * @author: Zhangchunhao
      */    
     List<Userinfo> getUserinfoListByTeamid(int teamid);
+
+    @Select("select * from user_info where teamid=#{teamid} and isleader=true")
+    /**
+     * @description: Get Teamleader by teamid
+     * @param {int} teamid
+     * @return {Userinfo}
+     * @author: Zhangchunhao
+     */    
+    Userinfo getTeamLeaderById(int teamid);
     
-    @Insert("insert into user_info value(#{userid},#{teamid},#{isleader}")
+    @Insert("insert into user_info value(#{userid},#{teamid},#{isleader})")
     /**
      * @description: Add a record of relation of user and team.
      * @param {Userinfo} userinfo

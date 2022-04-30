@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-13 16:40:38
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-23 22:48:44
+ * @LastEditTime: 2022-04-30 19:48:55
  */
 
 package com.example.demo.Dao;
@@ -39,6 +39,15 @@ public interface UserMapper {
      * @author: Zhangchunhao
      */
     User getUserById(int userid);
+
+    @Select("select userid from user where username=#{username}")
+    /**
+     * @description: Get userid by username.
+     * @param {String} username
+     * @return {int}
+     * @author: Zhangchunhao
+     */    
+    int getUseridByName(String username);
 
     @Insert("insert into user values (#{userid},#{username},#{password})")
     /**

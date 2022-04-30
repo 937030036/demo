@@ -39,8 +39,8 @@ public class TeamServiceimpl implements TeamService {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
-        String teampassword=new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"),"UTF-8");
+        String teamname =request.getParameter("teamname");
+        String teampassword = new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"), "UTF-8");
 
         int teamid = 0;
         boolean id_increment_flg = true;
@@ -57,7 +57,8 @@ public class TeamServiceimpl implements TeamService {
                 return msg;
             }
         }
-        teamid++;
+        if (id_increment_flg)
+            teamid++;
 
         Team team = new Team();
         team.setTeamid(teamid);
@@ -82,8 +83,8 @@ public class TeamServiceimpl implements TeamService {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
-        String teampassword=new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"),"UTF-8");
+        String teamname = new String((request.getParameter("teamname")).getBytes("ISO-8859-1"), "UTF-8");
+        String teampassword = new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"), "UTF-8");
 
         List<Team> teamlist = teamMapper.getTeamList();
         for (var teamtmp : teamlist) {
@@ -112,8 +113,8 @@ public class TeamServiceimpl implements TeamService {
         var user = (User) request.getSession().getAttribute("user");
         int userid = user.getUserid();
 
-        String teamname=new String((request.getParameter("teamname")).getBytes("ISO-8859-1"),"UTF-8");
-        String teampassword=new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"),"UTF-8");
+        String teamname = new String((request.getParameter("teamname")).getBytes("ISO-8859-1"), "UTF-8");
+        String teampassword = new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"), "UTF-8");
 
         int teamid = 0;
         msg = Msg.DISBANDTEAM_FAIL;
