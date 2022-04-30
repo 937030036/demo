@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-30 12:43:54
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-30 21:33:24
+ * @LastEditTime: 2022-04-30 22:52:32
  */
 package com.example.demo.Controller;
 
@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.PageService;
 
-import org.apache.ibatis.annotations.Flush;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
