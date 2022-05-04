@@ -4,13 +4,12 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-30 12:43:54
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-30 22:52:32
+ * @LastEditTime: 2022-05-04 19:29:43
  */
 package com.example.demo.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.example.demo.Msg.Msg;
 import com.example.demo.Service.interfaces.PageService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,11 +24,9 @@ public class PageCtler {
     @Autowired
     private PageService pageService;
 
-    private Msg msg;
-
     @GetMapping(value = "Index/page")
     public String getIndexPage(HttpServletRequest request) {
-        msg = pageService.IndexPageService(request);
+        pageService.IndexPageService(request);
         
         //request.getSession().setAttribute("msg", msg.toString());
         return "./users/Index";
@@ -37,14 +34,14 @@ public class PageCtler {
 
     @GetMapping("Team/page")
     public String getTeamPage(HttpServletRequest request) {
-        msg = pageService.TeamMemPageService(request);
+        pageService.TeamMemPageService(request);
         request.getSession().setAttribute("msg","");
         return "./users/Team";
     }
 
     @GetMapping("Trans/page")
     public String getTransPage(HttpServletRequest request) {
-        msg = pageService.TransPageService(request);
+        pageService.TransPageService(request);
         //request.getSession().setAttribute("msg",msg.toString());
         return "./users/Trans";
     }

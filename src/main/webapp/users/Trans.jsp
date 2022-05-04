@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-29 13:34:15
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-30 21:17:13
+ * @LastEditTime: 2022-05-02 14:26:04
 -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
     <%@ page import="
@@ -51,8 +51,12 @@ java.io.*
                         <br />
 
                         <div id="2" style="text-align:center;">
-                            <input style="font-size: large;text-align: center;" type="text" name="transtype"
-                                placeholder="事务类型" required="required" />
+                            <select name="transtype" style="font-size:large; width: 200px; height: 30px;text-align: center;">
+                                <option>message</option>
+                                <option>question</option>
+                            </select>
+                            <!-- <input style="font-size: large;text-align: center;" type="text" name="transtype"
+                                placeholder="事务类型" required="required" /> -->
                         </div>
 
                         <br />

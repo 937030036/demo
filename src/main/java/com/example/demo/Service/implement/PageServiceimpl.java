@@ -47,9 +47,10 @@ public class PageServiceimpl implements PageService {
 
         List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByUserid(userid);
         List<String> tnamelist = new ArrayList<>();
-        for (var userinfo : userinfolist) {
-            tnamelist.add(teamMapper.getTeamById(userinfo.getTeamid()).getTeamname());
-        }
+
+        userinfolist
+        .stream()
+        .forEach(userinfo->tnamelist.add(teamMapper.getTeamById(userinfo.getTeamid()).getTeamname()));
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("teamlist", tnamelist);
@@ -69,22 +70,25 @@ public class PageServiceimpl implements PageService {
 
         List<Userinfo> userinfolist = userinfoMapper.getUserinfoListByUserid(userid);
         List<Integer> memidarr = new ArrayList<>();
-        for (var userinfo : userinfolist) {
-            if (!userinfo.isLeader())
-                continue;
-            List<Userinfo> memidlist = userinfoMapper.getUserinfoListByTeamid(userinfo.getTeamid());
-            for (var mem : memidlist) {
-                if (!memidarr.contains(mem.getUserid())) {
-                    memidarr.add(mem.getUserid());
-                }
-            }
-        }
+
+        userinfolist
+        .stream()
+        .filter(userinfotmp->userinfotmp.isLeader())
+        .forEach(
+            userinfotmp->
+                userinfoMapper.getUserinfoListByTeamid(userinfotmp.getTeamid())
+                .stream()
+                .filter(mem->!memidarr.contains(mem.getUserid()))
+                .forEach(mem->memidarr.add(mem.getUserid()))
+        );
+
         if (!memidarr.contains(userid))
             memidarr.add(userid);
         List<Transhandle> finTranslist = new ArrayList<>();
-        for (var memid : memidarr) {
-            finTranslist.addAll(transhandleMapper.getFinishTranshandleListByUserid(memid));
-        }
+
+        memidarr
+        .stream()
+        .forEach(memid->finTranslist.addAll(transhandleMapper.getFinishTranshandleListByUserid(memid)));
 
         List<Transhandle> unfinTranslist = transhandleMapper.getUnfinishTranshandleListByUserid(userid);
 

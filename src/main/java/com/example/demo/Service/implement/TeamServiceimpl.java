@@ -3,6 +3,7 @@ package com.example.demo.Service.implement;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -87,25 +88,35 @@ public class TeamServiceimpl implements TeamService {
         String teampassword = new String((request.getParameter("teampassword")).getBytes("ISO-8859-1"), "UTF-8");
 
         List<Team> teamlist = teamMapper.getTeamList();
-        for (var teamtmp : teamlist) {
-            if (teamtmp.getTeamname().equals(teamname)) {
-                if (teamtmp.getTeampassword().equals(teampassword)) {
-                    Userinfo userinfo = new Userinfo();
-                    userinfo.setUserid(userid);
-                    userinfo.setTeamid(teamtmp.getTeamid());
-                    userinfo.setIsleader(false);
-                    int ret = userinfoMapper.insertUserinfo(userinfo);
-                    assert (ret > 0);
-                    msg = Msg.JOINTEAM_SUCC;
-                    return msg;
-                } else {
-                    break;
-                }
+        Team team;
+        try{
+            team=teamlist
+                .stream()
+                .filter(teamtmp->teamtmp.getTeamname().equals(teamname))
+                .findAny()
+                .get();
+        }
+        catch(NoSuchElementException e){
+            team=null;
+        }
+
+        if(team==null){
+            return Msg.JOINTEAM_FAIL;
+        }
+        else{
+            if(team.getTeampassword().equals(teampassword)){
+                Userinfo userinfo = new Userinfo();
+                userinfo.setUserid(userid);
+                userinfo.setTeamid(team.getTeamid());
+                userinfo.setIsleader(false);
+                int ret = userinfoMapper.insertUserinfo(userinfo);
+                assert (ret > 0);
+                return Msg.JOINTEAM_SUCC;
+            }
+            else{
+                return Msg.JOINTEAM_FAIL;
             }
         }
-        msg = Msg.JOINTEAM_FAIL;
-
-        return msg;
     }
 
     @Override
@@ -119,21 +130,27 @@ public class TeamServiceimpl implements TeamService {
         int teamid = 0;
         msg = Msg.DISBANDTEAM_FAIL;
         List<Team> teamlist = teamMapper.getTeamList();
-        for (var teamtmp : teamlist) {
-            if (teamtmp.getTeamname().equals(teamname)) {
-                if (teamtmp.getTeampassword().equals(teampassword)) {
-                    Userinfo userinfo = new Userinfo();
-                    userinfo.setUserid(userid);
-                    userinfo.setTeamid(teamtmp.getTeamid());
-                    Userinfo userinforet = userinfoMapper.getUserinfoByObj(userinfo);
-                    if (userinforet.isLeader()) {
-                        msg = Msg.DISBANDTEAM_SUCC;
-                        teamid = teamtmp.getTeamid();
-                        break;
-                    } else
-                        break;
-                } else
-                    break;
+        Team team;
+        try{
+            team=teamlist
+                .stream()
+                .filter(teamtmp->teamtmp.getTeamname().equals(teamname))
+                .filter(teamtmp->teamtmp.getTeampassword().equals(teampassword))
+                .findAny()
+                .get();
+        }
+        catch(NoSuchElementException e){
+            team=null;
+        }
+
+        if(team!=null){
+            Userinfo userinfo = new Userinfo();
+            userinfo.setUserid(userid);
+            userinfo.setTeamid(team.getTeamid());
+            Userinfo userinforet = userinfoMapper.getUserinfoByObj(userinfo);
+            if (userinforet.isLeader()) {
+                msg = Msg.DISBANDTEAM_SUCC;
+                teamid = team.getTeamid();
             }
         }
 
@@ -141,15 +158,15 @@ public class TeamServiceimpl implements TeamService {
             assert (teamid > 0);
             List<Integer> transidlist = new ArrayList<>();
             List<Trans> translist = transMapper.getTransListByTeamid(teamid);
-            for (var trantmp : translist) {
-                if (!transidlist.contains(trantmp.getTransid()))
-                    transidlist.add(trantmp.getTransid());
-            }
 
-            for (var transid : transidlist) {
-                int ret = transhandleMapper.deleteTranshandleByTransid(transid);
-                assert (ret > 0);
-            }
+            translist
+            .stream()
+            .filter(transtmp->transidlist.contains(transtmp.getTransid()))
+            .forEach(transtmp->transidlist.add(transtmp.getTransid()));
+
+            transidlist
+            .stream()
+            .forEach(transid->transhandleMapper.deleteTranshandleByTransid(transid));
 
             int ret = transMapper.deleteTransByTeamid(teamid);
             assert (ret > 0);

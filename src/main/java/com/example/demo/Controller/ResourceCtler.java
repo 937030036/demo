@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-07 10:59:45
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-30 14:31:08
+ * @LastEditTime: 2022-05-01 11:15:48
  */
 package com.example.demo.Controller;
 
@@ -58,5 +58,16 @@ public class ResourceCtler {
         os.flush();
         os.close();
         input.close();
+    }
+
+    @GetMapping(value = "favicon.ico")
+    @ResponseBody
+    public byte[] getIco(HttpServletRequest request) throws IOException {
+        File file = new File("src/main/resources/favicon.ico");
+        FileInputStream input = new FileInputStream(file);
+        byte[] bytes = new byte[input.available()];
+        input.read(bytes, 0, input.available());
+        input.close();
+        return bytes;
     }
 }

@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-13 17:55:09
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-30 14:58:21
+ * @LastEditTime: 2022-05-04 18:21:04
  */
 package com.example.demo.Service.implement;
 
@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -40,33 +41,34 @@ public class SignServiceImpl implements SignService {
 
         String username = new String((request.getParameter("username")).getBytes("ISO-8859-1"), "UTF-8");
         String password = new String((request.getParameter("password")).getBytes("ISO-8859-1"), "UTF-8");
+        User user;
 
-        for (var user : userList) {
-            if (user.getUsername().equals(username)) {
-                if (user.getPassword().equals(password)) {
-                    logger.info(user.getUsername() + " login succ!");
-
-                    msg = Msg.SIGNIN_SUCC;
-
-                    if (!userloginMap.isEmpty()) {
-                        if (userloginMap.containsKey(username)) {
-                            userloginMap.get(username).invalidate();
-                        }
-                    }
-                    userloginMap.put(username, request.getSession());
-                    request.getSession().setAttribute("user", user);
-
-                    return msg;
-                } else {
-                    logger.info(username + " password invaild!");
-                    msg = Msg.PASSWORD_WRONG;
-                    return msg;
-                }
-            }
+        try{
+            user=
+            userList
+            .stream()
+            .filter(usertmp->usertmp.getUsername().equals(username))
+            .findAny()
+            .get();
         }
-        logger.info(username + " no exist!");
-        msg = Msg.USERNAME_NOEXIST;
-        return msg;
+        catch(NoSuchElementException e){
+            user=null;
+        }
+            
+        if(user==null) return Msg.USERNAME_NOEXIST;
+        else {
+            if(user.getPassword().equals(password)) {
+                if (!userloginMap.isEmpty()) {
+                    if (userloginMap.containsKey(username)) {
+                        userloginMap.get(username).invalidate();
+                    }
+                }
+                userloginMap.put(username, request.getSession());
+                request.getSession().setAttribute("user", user);
+                return Msg.SIGNIN_SUCC;
+            }
+            else return Msg.PASSWORD_WRONG;
+        }
     }
 
     @Override

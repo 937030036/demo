@@ -4,7 +4,7 @@
  * @Autor: Zhangchunhao
  * @Date: 2022-04-29 10:04:07
  * @LastEditors: Zhanchunhao
- * @LastEditTime: 2022-04-29 22:02:35
+ * @LastEditTime: 2022-05-04 14:30:35
  */
 package com.example.demo;
 
@@ -75,7 +75,7 @@ public class SignServiceTest {
 
 		User user = (User) Request.getSession().getAttribute("user");
 		assert (user.getUserid() == 55);
-		assert (user.getUsername().equals("aaa"));
+		assert (user.getUsername().equals("aa"));
 		assert (user.getPassword().equals("bb"));
 		assert (msg.equals(Msg.SIGNIN_SUCC));
 
