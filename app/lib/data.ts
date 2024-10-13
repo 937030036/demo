@@ -4,6 +4,7 @@ const conn = pool.getConnection();
 import {
   CustomerField,
   CustomersTableType,
+  Invoice,
   InvoiceForm,
   InvoicesTable,
   LatestInvoice,
@@ -19,7 +20,6 @@ export async function fetchRevenue() {
     // Don't do this in production :)
 
     console.log('Fetching revenue data...');
-    await new Promise((resolve) => setTimeout(resolve, 3000));
 
     // const data = await sql<Revenue>`SELECT * FROM revenue`;
     const lst: Revenue[] = []
@@ -181,7 +181,7 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const data = await sql<InvoiceForm>`
+    const [data] = await (await conn).query<RowDataPacket[]>(`
       SELECT
         invoices.id,
         invoices.customer_id,
@@ -189,15 +189,21 @@ export async function fetchInvoiceById(id: string) {
         invoices.status
       FROM invoices
       WHERE invoices.id = ${id};
-    `;
+    `);
 
-    const invoice = data.rows.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
-
-    return invoice[0];
+    const invoice: Invoice = {
+      id: data[0].id,
+      customer_id: data[0].customer_id,
+      amount: data[0].amount / 100,
+      status: data[0].status,
+      date: ''
+    }
+    // const invoice = data[0].map((invoice: { amount: number; }) => ({
+    //   ...invoice,
+    //   // Convert amount from cents to dollars
+    //   amount: invoice.amount / 100,
+    // }));
+    return invoice;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
@@ -206,16 +212,27 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    const data = await sql<CustomerField>`
+    const data = await (await conn).query<RowDataPacket[]>(`
       SELECT
         id,
         name
       FROM customers
       ORDER BY name ASC
-    `;
+    `);
 
-    const customers = data.rows;
-    return customers;
+    console.log(data[0]);
+
+    var res: CustomerField[] = []
+
+    for (var item of data[0]) {
+      var i: CustomerField = {
+        id: item.id,
+        name: item.name
+      }
+
+      res.push(i)
+    }
+    return res;
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch all customers.');
@@ -252,5 +269,19 @@ export async function fetchFilteredCustomers(query: string) {
   } catch (err) {
     console.error('Database Error:', err);
     throw new Error('Failed to fetch customer table.');
+  }
+}
+
+export async function InsertInvoice(invoice: Invoice) {
+  try {
+
+    (await conn).execute(`
+      INSERT INTO invoices (customer_id, amount, status, date)
+    VALUES ('${invoice.customer_id}', ${invoice.amount}, '${invoice.status}', '${invoice.date}')
+    `);
+
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to insert invoice.');
   }
 }
