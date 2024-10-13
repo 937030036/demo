@@ -285,3 +285,28 @@ export async function InsertInvoice(invoice: Invoice) {
     throw new Error('Failed to insert invoice.');
   }
 }
+
+export async function UpdateInvoice(invoice: Invoice) {
+  try {
+
+    (await conn).execute(`
+    UPDATE invoices
+    SET customer_id = '${invoice.customer_id}', amount = ${invoice.amount}, status = '${invoice.status}'
+    WHERE id = '${invoice.id}'
+  `);
+
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to insert invoice.');
+  }
+}
+
+export async function DeleteInvoiceById(id: string) {
+  try {
+    (await conn).execute(`DELETE FROM invoices WHERE id = '${id}'`);
+
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to insert invoice.');
+  }
+}

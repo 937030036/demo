@@ -1,7 +1,7 @@
 'use server';
 import { z } from 'zod'
 import { Invoice } from './definitions';
-import { InsertInvoice } from './data';
+import { DeleteInvoiceById, InsertInvoice, UpdateInvoice } from './data';
 
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
@@ -40,4 +40,33 @@ export async function createInvoice(formData: FormData) {
 
     revalidatePath('/dashboard/invoices');
     redirect('/dashboard/invoices');
+}
+
+const UpdateInvoiceSchema = FormSchema.omit({ id: true, date: true });
+
+export async function updateInvoice(id: string, formData: FormData) {
+    const { customerId, amount, status } = UpdateInvoiceSchema.parse({
+        customerId: formData.get('customerId'),
+        amount: formData.get('amount'),
+        status: formData.get('status'),
+    });
+
+    const amountInCents = amount * 100;
+    var invoice: Invoice = {
+        id: id,
+        customer_id: customerId,
+        amount: amountInCents,
+        status: status,
+        date: ''
+    }
+
+    UpdateInvoice(invoice);
+
+    revalidatePath('/dashboard/invoices');
+    redirect('/dashboard/invoices');
+}
+
+export async function deleteInvoice(id: string) {
+    DeleteInvoiceById(id);
+    revalidatePath('/dashboard/invoices');
 }
