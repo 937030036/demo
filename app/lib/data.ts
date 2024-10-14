@@ -188,9 +188,11 @@ export async function fetchInvoiceById(id: string) {
         invoices.amount,
         invoices.status
       FROM invoices
-      WHERE invoices.id = ${id};
+      WHERE invoices.id = '${id}';
     `);
-
+    if (data.length == 0) {
+      return null;
+    }
     const invoice: Invoice = {
       id: data[0].id,
       customer_id: data[0].customer_id,
@@ -219,8 +221,6 @@ export async function fetchCustomers() {
       FROM customers
       ORDER BY name ASC
     `);
-
-    console.log(data[0]);
 
     var res: CustomerField[] = []
 
@@ -297,7 +297,7 @@ export async function UpdateInvoice(invoice: Invoice) {
 
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to insert invoice.');
+    throw new Error('Failed to update invoice.');
   }
 }
 
@@ -307,6 +307,6 @@ export async function DeleteInvoiceById(id: string) {
 
   } catch (err) {
     console.error('Database Error:', err);
-    throw new Error('Failed to insert invoice.');
+    throw new Error('Failed to Delete invoice.');
   }
 }
