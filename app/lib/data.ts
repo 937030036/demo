@@ -5,11 +5,12 @@ import {
   CustomerField,
   CustomersTableType,
   Invoice,
-  InvoiceForm,
+  // InvoiceForm,
   InvoicesTable,
   LatestInvoice,
-  LatestInvoiceRaw,
+  // LatestInvoiceRaw,
   Revenue,
+  User,
 } from './definitions';
 import { formatCurrency } from './utils';
 import { RowDataPacket } from 'mysql2/promise';
@@ -24,8 +25,8 @@ export async function fetchRevenue() {
     // const data = await sql<Revenue>`SELECT * FROM revenue`;
     const lst: Revenue[] = []
     const data = await (await conn).query<RowDataPacket[]>(`SELECT * FROM revenue`);
-    for (var item of data[0]) {
-      var i: Revenue = {
+    for (const item of data[0]) {
+      const i: Revenue = {
         month: item.month,
         revenue: item.revenue
       }
@@ -53,9 +54,9 @@ export async function fetchLatestInvoices() {
       JOIN customers ON invoices.customer_id = customers.id
       ORDER BY invoices.date DESC
       LIMIT 5`);
-    var lst: LatestInvoice[] = []
-    for (var item of data[0]) {
-      var i: LatestInvoice = {
+    const lst: LatestInvoice[] = []
+    for (const item of data[0]) {
+      const i: LatestInvoice = {
         id: item.id,
         name: item.name,
         image_url: item.image_url,
@@ -137,9 +138,9 @@ export async function fetchFilteredInvoices(
       ORDER BY invoices.date DESC
       LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `);
-    var res: InvoicesTable[] = []
-    for (var item of invoices[0]) {
-      var i: InvoicesTable = {
+    const res: InvoicesTable[] = []
+    for (const item of invoices[0]) {
+      const i: InvoicesTable = {
         id: item.id,
         customer_id: item.customer,
         name: item.name,
@@ -222,10 +223,10 @@ export async function fetchCustomers() {
       ORDER BY name ASC
     `);
 
-    var res: CustomerField[] = []
+    const res: CustomerField[] = []
 
-    for (var item of data[0]) {
-      var i: CustomerField = {
+    for (const item of data[0]) {
+      const i: CustomerField = {
         id: item.id,
         name: item.name
       }
@@ -304,6 +305,28 @@ export async function UpdateInvoice(invoice: Invoice) {
 export async function DeleteInvoiceById(id: string) {
   try {
     (await conn).execute(`DELETE FROM invoices WHERE id = '${id}'`);
+
+  } catch (err) {
+    console.error('Database Error:', err);
+    throw new Error('Failed to Delete invoice.');
+  }
+}
+
+export async function GetUserByEmail(email: string) {
+  try {
+    const [data] = await (await conn).query<RowDataPacket[]>(`SELECT * FROM users WHERE email='${email}'`);
+
+    if (data.length == 0) {
+      return undefined;
+    }
+    const user: User = {
+      id: data[0].id,
+      name: data[0].name,
+      email: data[0].email,
+      password: data[0].password
+    };
+
+    return user;
 
   } catch (err) {
     console.error('Database Error:', err);

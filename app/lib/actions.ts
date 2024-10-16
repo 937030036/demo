@@ -6,6 +6,33 @@ import { DeleteInvoiceById, InsertInvoice, UpdateInvoice } from './data';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
+
+
+export async function authenticate(
+    prevState: string | undefined,
+    formData: FormData,
+) {
+    try {
+        await signIn('credentials', formData);
+    } catch (error) {
+        if (error instanceof AuthError) {
+            console.log(error.message)
+            switch (error.type) {
+                case 'CredentialsSignin':
+                    return 'Invalid credentials.';
+                case 'CallbackRouteError':
+                    return 'username or password wrong';
+                default:
+                    return 'Something went wrong.';
+            }
+        }
+        throw error;
+    }
+}
+
+
 const FormSchema = z.object({
     id: z.string(),
     customerId: z.string(),
@@ -28,7 +55,7 @@ export async function createInvoice(formData: FormData) {
     // Test it out:
     console.log(customerId, amountInCents, status, date);
 
-    var invoice: Invoice = {
+    const invoice: Invoice = {
         id: "",
         customer_id: customerId,
         amount: amountInCents,
@@ -52,7 +79,7 @@ export async function updateInvoice(id: string, formData: FormData) {
     });
 
     const amountInCents = amount * 100;
-    var invoice: Invoice = {
+    const invoice: Invoice = {
         id: id,
         customer_id: customerId,
         amount: amountInCents,
